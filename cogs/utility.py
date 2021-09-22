@@ -1,4 +1,3 @@
-import os
 import discord
 from discord.ext import commands 
 from discord.utils import get
@@ -106,6 +105,9 @@ class Utility(commands.Cog):
   @commands.command(aliases=["member_count","member count"])
   async def membercount(self,ctx):
     await ctx.send(str(ctx.guild.member_count))
+
+
+
   
 
 def setup(bot):

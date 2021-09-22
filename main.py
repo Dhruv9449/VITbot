@@ -1,11 +1,7 @@
 import os
 import discord
 from keep_alive import keep_alive
-import random
 from discord.ext import commands 
-from discord.utils import get
-from datetime import datetime
-import youtube_dl
 
 
 

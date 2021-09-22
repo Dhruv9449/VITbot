@@ -3,21 +3,15 @@
     "main.py": [
       {
         "id": "0bd19d63-2abd-43ae-99c9-4787f627092a",
-        "line": 5,
-        "version": 7168,
-        "index": 73
-      },
-      {
-        "id": "ab61d478-ef31-464c-99ab-c2a22b8feb53",
-        "line": 41,
-        "version": 7168,
-        "index": 889
+        "line": 4,
+        "version": 7208,
+        "index": 59
       },
       {
         "id": "bd786cfa-9921-448f-994b-048df1175bd3",
-        "line": 62,
-        "version": 7168,
-        "index": 1165
+        "line": 60,
+        "version": 7208,
+        "index": 1075
       }
     ],
     "music.py": [

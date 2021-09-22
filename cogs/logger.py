@@ -1,6 +1,4 @@
-import os
 import discord
-import random
 from discord.ext import commands 
 from discord.utils import get
 from datetime import datetime
@@ -20,6 +18,7 @@ class logs(commands.Cog):
   
   @commands.Cog.listener()
   async def on_ready(self):
+    
     await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='VITians'))
     print("We have logged in as {0.user}!!".format(self.bot))
 
@@ -157,16 +156,6 @@ class logs(commands.Cog):
 
 
 
-
-
-
-
-
-
-    
-
-
-    
 
 
 

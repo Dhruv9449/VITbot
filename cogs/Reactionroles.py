@@ -1,12 +1,9 @@
-import os
 import discord
-import random
 from discord.ext import commands 
 from discord.utils import get
-from datetime import datetime
+from replit import db
 
 
-Msgs={}
 
 class ReactionRoles(commands.Cog):
 
@@ -44,13 +41,14 @@ class ReactionRoles(commands.Cog):
 
     Embed.set_footer(text="VIT Vellore", icon_url="https://vit.ac.in/vit-rank/assets/img/VIT-logo.png")
 
-    global msgBR
+
     msgBR = await ctx.send(embed=Embed)
 
-    Msgs["BRmid"]=msgBR.id
-    Msgs["BRcid"]=msgBR.channel.id
+    db["BRmid"]=msgBR.id
+    db["BRcid"]=msgBR.channel.id
+    print(db["BRmid"])
 
-    global RolesR
+
     RolesR=["💻","📻","💡","🎛","🖥","🔧","🧪","🧬","🏗"]
     
     for r in RolesR:
@@ -74,13 +72,13 @@ class ReactionRoles(commands.Cog):
 
     Embed.add_field(name="🗣VC", value="If you want to be pinged for Voice chats" , inline=False)
 
-    global msgOR 
     msgOR = await ctx.send(embed=Embed)
     
+    db["ORmid"]=msgOR.id
+    db["ORcid"]=msgOR.channel.id
     
-    
+    print(db["ORcid"])
 
-    global RolesOR 
     RolesOR=["🎮","👨🏻‍💻","🎶","🗣"]
 
     for r in RolesOR:
@@ -94,11 +92,27 @@ class ReactionRoles(commands.Cog):
 
 
   @commands.Cog.listener()
-  async def on_reaction_add(self,reaction,user):
-    guild=reaction.message.guild
+  async def on_raw_reaction_add(self,payload):
+    user = payload.member
+    emoji=payload.emoji
+    guild = user.guild
+    channel= self.bot.get_channel(payload.channel_id)
+    msg = await channel.fetch_message(payload.message_id)
+
+
+
+
     if user != self.bot.user:
-      if reaction.message==msgBR:
-        await msgBR.remove_reaction(reaction, user)
+
+      msgBRid= db["BRmid"]
+      msgORid= db["ORmid"]
+
+
+
+
+      if payload.message_id==msgBRid:
+        await msg.remove_reaction(emoji, user)
+        RolesR=["💻","📻","💡","🎛","🖥","🔧","🧪","🧬","🏗"]
         rolenames=["CSE","ECE","EEE","EIE","IT","Mech","Chemical","Biotech","Civil"]
         Roles=[]
         for rolename in rolenames:
@@ -110,18 +124,19 @@ class ReactionRoles(commands.Cog):
         Roles=list(Roles)
         Rdic=dict(zip(RolesR,Rl))
         if uroles.isdisjoint(Roles):
-          await user.add_roles(Rdic[str(reaction.emoji)])
-          await user.send(f"You joined **{Rdic[str(reaction.emoji)].name}**")
+          await user.add_roles(Rdic[str(emoji)])
+          await user.send(f"You joined **{Rdic[str(emoji)].name}**")
         
         else:
           er = list(uroles.intersection(Roles))[0]
           
           await user.remove_roles(er)
-          await user.add_roles(Rdic[str(reaction.emoji)])
-          await user.send(f"You joined **{Rdic[str(reaction.emoji)].name}**")
+          await user.add_roles(Rdic[str(emoji)])
+          await user.send(f"You joined **{Rdic[str(emoji)].name}**")
       
-      elif reaction.message==msgOR:
-        await msgOR.remove_reaction(reaction,user)
+      elif payload.message_id==msgORid:
+        await msg.remove_reaction(emoji,user)
+        RolesOR=["🎮","👨🏻‍💻","🎶","🗣"]
         rolenames=["gamers🎮","coder👨‍💻","musicians 🎶","VC 🗣"]
         Roles=[]
         for rolename in rolenames:
@@ -132,14 +147,14 @@ class ReactionRoles(commands.Cog):
         uroles=set(user.roles)
         Roles=list(Roles)
         Rdic=dict(zip(RolesOR,Rl))
-        if Rdic[str(reaction.emoji)] not in uroles:
-          await user.add_roles(Rdic[str(reaction.emoji)])
-          await user.send(f"You joined **{Rdic[str(reaction.emoji)].name}**")
+        if Rdic[str(emoji)] not in uroles:
+          await user.add_roles(Rdic[str(emoji)])
+          await user.send(f"You joined **{Rdic[str(emoji)].name}**")
         
         else:
-          await user.remove_roles(Rdic[str(reaction.emoji)])
+          await user.remove_roles(Rdic[str(emoji)])
 
-          await user.send(f"You left **{Rdic[str(reaction.emoji)].name}**")
+          await user.send(f"You left **{Rdic[str(emoji)].name}**")
 
       
 
