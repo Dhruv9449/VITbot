@@ -2,7 +2,7 @@
 
 An all in one bot for VIT server
 
-##### Featrues- 
+#### Featrues- 
 - Welcome and exit messages
 - Announcements 
 - Finding users with particular roles 
